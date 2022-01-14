@@ -19,7 +19,6 @@ namespace Api_LoginMvc.Controllers
             _service = serviceLogin;
         }
 
-
         [HttpPost("Cadastro")]
         public ActionResult<dynamic> Post([FromBody] Usuario usuario)
         {
@@ -39,24 +38,23 @@ namespace Api_LoginMvc.Controllers
                 {
                     return new { Mensagem = "E-mail já existente" };
                 }
-                    
             }
             catch (Exception ex)
             {
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+                return new { MensagemErro = StatusCode((int)HttpStatusCode.InternalServerError, ex.Message)};
             }
         }
 
         [HttpPost("Login")]
-        public ActionResult<dynamic> Login(string Email, string Password)
+        public ActionResult<dynamic> Login([FromBody]Login login)
         {
             try
             {
-                if (!string.IsNullOrEmpty(Email) && !string.IsNullOrEmpty(Password))
+                if (!string.IsNullOrEmpty(login.Email) && !string.IsNullOrEmpty(login.Password))
                 {
-                    if (QuerysGlobal.FindExistingUser(Email))
+                    if (QuerysGlobal.FindExistingUser(login.Email))
                     {
-                        var user = _service.Login(Email, Password);
+                        var user = _service.Login(login.Email, login.Password);
                         var token = TokenService.GenerateToken(user);
 
                         if (user == null)
@@ -68,7 +66,6 @@ namespace Api_LoginMvc.Controllers
                             user = dtoResult,
                             token = token
                         };
-
                     }
                     else
                     {

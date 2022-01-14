@@ -52,7 +52,7 @@ namespace Api_LoginMvc.Repository
         //metodo login
         public Usuario Login(string Email, string Password)
         {
-            Usuario user = Global.Usuarios.SingleOrDefault(x => x.Email == Email);
+            Usuario user = Global.Usuarios.SingleOrDefault(x => x.Email.ToLower() == Email.ToLower());
 
             user.lastLogin_CurrentDate();
             _bancoDados.SaveChanges();

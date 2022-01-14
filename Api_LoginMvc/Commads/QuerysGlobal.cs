@@ -10,7 +10,7 @@ namespace Api_LoginMvc.Commads
     {
         public static bool FindExistingUser(string email)
         {
-            Usuario user = Global.Usuarios.SingleOrDefault(x => x.Email == email.ToLower());
+            Usuario user = Global.Usuarios.SingleOrDefault(x => x.Email.ToLower() == email.ToLower());
             if (user == null)
                 return false;
 
